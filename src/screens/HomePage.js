@@ -14,7 +14,7 @@ export default function HomePage({ navigation }) {
   const dispatch = useDispatch();
   const { toggle } = useTask();
 
-  const handleEdit = task => navigation.navigate("FormPage", { task });
+  const handleEdit = task => navigation.navigate("Formulario", { task });
 
   const handleDelete = (id: string) => {
     console.log("PROBANDO ELIMINAR id=", id);
@@ -25,7 +25,7 @@ export default function HomePage({ navigation }) {
     <SafeAreaView style={{ flex: 1 }}>
       <Header title="Lista de Tareas 📝" />
       <View style={{ flex: 1, padding: 16 }}>
-        <ButtonCustom title="Agregar Tarea" onPress={() => navigation.navigate("FormPage")} />
+        <ButtonCustom title="Agregar Tarea" onPress={() => navigation.navigate("Formulario")} />
         <FlatList
           data={tasks}
           keyExtractor={item => item.id}
@@ -35,6 +35,7 @@ export default function HomePage({ navigation }) {
               onToggle={toggle}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              editable={false}
             />
           )}
           contentContainerStyle={{ paddingBottom: 24 }}

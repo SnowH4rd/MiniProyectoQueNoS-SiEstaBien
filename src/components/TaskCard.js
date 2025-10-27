@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, Switch } from "react-native";
 import { Task } from "../store/taskSlice";
 import ButtonCustom from "./ButtonCustom";
@@ -8,9 +8,12 @@ interface TaskCardProps {
   onToggle: (id: string) => void;
   onEdit: (task: Task) => void;
   onDelete: (id: string) => void;
+  editable?: boolean;
 }
 
-export default function TaskCard({ task, onToggle, onEdit, onDelete }: TaskCardProps) {
+export default function TaskCard({ task, onToggle, onEdit, onDelete, editable = false }: TaskCardProps) {
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
   return (
     <View style={styles.card}>
       <View style={{ marginBottom: 8 }}>
@@ -20,12 +23,39 @@ export default function TaskCard({ task, onToggle, onEdit, onDelete }: TaskCardP
 
       <View style={styles.row}>
         <Text style={styles.status}>{task.completed ? "✓ Completada" : "⏳ Pendiente"}</Text>
-        <Switch value={task.completed} onValueChange={() => onToggle(task.id)} />
+        <Switch value={task.completed} onValueChange={() => onToggle(task.id)} disabled={!editable} trackColor={{ false: "#ccc", true: "green" }}
+  thumbColor={task.completed ? "white" : "white"} />
       </View>
 
       <View style={styles.buttons}>
         <ButtonCustom title="Editar" onPress={() => onEdit(task)} style={{ minWidth: 90 }} />
-        <ButtonCustom title="Eliminar" type="danger" onPress={() => onDelete(task.id)} style={{ minWidth: 90 }} />
+
+        {confirmDelete ? (
+          <>
+            <ButtonCustom
+              title="Sí, borrar"
+              type="danger"
+              onPress={() => {
+                onDelete(task.id);
+                setConfirmDelete(false);
+              }}
+              style={{ minWidth: 80 }}
+            />
+            <ButtonCustom
+              title="Cancelar"
+              type="secondary"
+              onPress={() => setConfirmDelete(false)}
+              style={{ minWidth: 80 }}
+            />
+          </>
+        ) : (
+          <ButtonCustom
+            title="Eliminar"
+            type="danger"
+            onPress={() => setConfirmDelete(true)}
+            style={{ minWidth: 80 }}
+          />
+        )}
       </View>
     </View>
   );

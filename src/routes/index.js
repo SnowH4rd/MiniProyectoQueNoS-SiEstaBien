@@ -13,9 +13,9 @@ export default function Routes() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="HomePage">
-          <Stack.Screen name="HomePage" component={HomePage} />
-          <Stack.Screen name="FormPage" component={FormPage} />
+        <Stack.Navigator initialRouteName="Pagina de Inicio">
+          <Stack.Screen name="Pagina de Inicio" component={HomePage} />
+          <Stack.Screen name="Formulario" component={FormPage} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
